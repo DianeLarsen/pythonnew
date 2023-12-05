@@ -170,11 +170,31 @@ def open1():
 def open2():
     top2 = Toplevel()
     top2.title("WordlePy")
-    top2.configure(background="Black")
+    top2.geometry('500x400')  
+    top2.configure(background="black")
+    Tops2 = Frame(top2, bg = "Black", pady = 2, width = 1350, height = 100, relief = RIDGE)
+    Tops2.grid(row=0, column=0)
+    lblTitle = Label(Tops2, font=('arial', 30, 'bold'), text="Silly Libs Generator", bd=10, bg="Black", fg="Cornsilk", justify=CENTER)
+    lblTitle.grid(row=0, column=0)
+    MainFrame1 = Frame(top2, bg = "Grey", bd = 10, width = 500, height = 300, padx = 2, pady = 3, relief = RIDGE)
+    MainFrame1.grid(row=1, column=0, padx = 30)
+    
+
+
+
+
 def open3():
-    top = Toplevel()
-    top.title("Hangman")
-    top.configure(background="Black")
+    top3 = Toplevel()
+    top3.title("Hangman")
+    top3.configure(background="Black")
+    top3.geometry('500x400')  
+    top3.configure(background="black")
+    Tops3 = Frame(top3, bg = "Black", pady = 2, width = 1350, height = 100, relief = RIDGE)
+    Tops3.grid(row=0, column=0)
+    lblTitle = Label(Tops3, font=('arial', 30, 'bold'), text="Silly Libs Generator", bd=10, bg="Black", fg="Cornsilk", justify=CENTER)
+    lblTitle.grid(row=0, column=0)
+    MainFrame1 = Frame(top3, bg = "Grey", bd = 10, width = 500, height = 300, padx = 2, pady = 3, relief = RIDGE)
+    MainFrame1.grid(row=1, column=0, padx = 30)
 
 btn1 = Button(MainFrame, text="Silly Libs", width=25, height = 7, padx = 2, pady = 3, command=open1).grid(row = 0, column = 0)
 btn2 = Button(MainFrame, text="WordlePy", width=25, height = 7, padx = 2, pady = 3, command=open2).grid(row = 0, column = 1)
