@@ -14,15 +14,19 @@ class Wordle:
         word = word.upper()
         result = []
         letcolor = []
+        usedletters = []
         for i in range(self.WORD_LENGTH):
             character = word[i]
             
             letter = LetterState(character)
             letter.is_in_word = character in self.secret
             letter.is_in_position = character in self.secret[i]
+            letter.is_in_word_twice = character in usedletters
             if letter.is_in_position:
+                usedletters.append(character)
                 letcolor.append("Green")
-            elif letter.is_in_word and not letter.is_in_position:
+            elif letter.is_in_word and not letter.is_in_position and not letter.is_in_word_twice and word.count(character) == 1:
+                usedletters.append(character)
                 letcolor.append("Orange")
             else:
                 letcolor.append("LightSteelBlue4")
