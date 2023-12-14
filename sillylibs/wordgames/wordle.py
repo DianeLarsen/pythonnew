@@ -25,7 +25,7 @@ class Wordle:
             if letter.is_in_position:
                 usedletters.append(character)
                 letcolor.append("Green")
-            elif letter.is_in_word and not letter.is_in_position and not letter.is_in_word_twice and word.count(character) == 1:
+            elif letter.is_in_word and not letter.is_in_position and not letter.is_in_word_twice:
                 usedletters.append(character)
                 letcolor.append("Orange")
             else:

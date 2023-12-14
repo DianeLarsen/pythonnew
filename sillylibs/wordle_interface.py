@@ -3,17 +3,11 @@ from wordle import Wordle
 import tkinter.messagebox
 import random
 
-
-
 top2 = Tk()
-
-
-
-
 
 # top2 = Toplevel()
 top2.title("WordlePy")
-top2.geometry('500x800+0+0')  
+top2.geometry('535x800+0+0')  
 top2.configure(background="black")
 Tops2 = Frame(top2, bg = "Black", pady = 2, width = 1350, height = 90, relief = RIDGE)
 Tops2.grid(row=0, column=0)
@@ -28,16 +22,9 @@ RightFrame.pack(anchor=CENTER)
 BottomFrame = Frame(MainFrame1, bd = 10, width = 450, height = 150, padx=1, pady=3, bg = "Black")
 BottomFrame.pack(side=BOTTOM)
 def assignLtr(ltr, ltrBtn):
-    # print("letter pushed", ltr.get())
-    # print(ltrBtn)
-    for i in range(3):
-        for j in range(10):
-            if letters[i][j] == ltr.get():
-
-                ltrBtn.configure(bg="LightSteelBlue4")
     test = top2.focus_get()
     test.configure(bg="lavender")
-    test.select_range(0, END)
+    # test.select_range(0, END)
     test.insert(0, ltr.get())
     if test == newword5:
         EnterButton.focus()
@@ -61,37 +48,35 @@ def assignLtr(ltr, ltrBtn):
 def validate_ltr(ltr):
     ltrs = ltr.get()
     if ltrs:
-        # print(f"there is something {ltrs}")
         if ltrs.isalpha():
-            # print("it is a letter")
             if len(ltrs) == 1:
                 ltr.delete(0, END)
                 ltr.insert(0, ltrs.upper())
                 return True
             else:
-                # tkinter.messagebox.showinfo("Error", f"Must only be 1 character per box!")
+                tkinter.messagebox.showinfo("Error", f"Must only be 1 character per box!")
                 return False
         else:
-            # print("it is not a letter")
-            # tkinter.messagebox.showinfo("Error", f"Letter Characters Only")
+            tkinter.messagebox.showinfo("Error", f"Letter Characters Only")
             return False
     elif ltrs == "":
-        print("there is nothing")
         return True
 def restart():
-    global word_set, secret, wordle
+    global word_set, secret, wordle, lettersMatchedGreen, lettersMatchedOrange
     word_set = load_word_set("words.txt")
     secret = random.choice(list(word_set))
     wordle = Wordle(secret)
     print(secret)
     wordle.attempts = []
+    lettersMatchedGreen = []
+    lettersMatchedOrange = []
+    assignColor()
     writeboxes()
 
 def clear():
     writeboxes()
 
 def backspace():
-    print("I backspaced")
     test = top2.focus_get()
     if test == EnterButton:
         
@@ -122,9 +107,6 @@ def backspace():
             test.delete(0, END)
     test = top2.focus_get()
 
-# def changeColor(event):
-#     print(event)
-#     # event.configure(highlightbackground="#009588")
 
 class Btns_:
     def __init__(self, text_, x, y):
@@ -241,58 +223,42 @@ def load_word_set(path: str):
             word_set.add(word)
         return word_set
 
-word_set = load_word_set("words.txt")
+word_set = load_word_set("wordle_words.txt")
 secret = random.choice(list(word_set))
 wordle = Wordle(secret)
 print(secret)
 result = ""
 ltrcolor = []
+lettersMatchedGreen = []
+lettersMatchedOrange = []
 def checkLtrColor():
-    for i in range(3):
-        for j in range(10):
-            # print("letter to check", letters[i][j])
-            # print("letters chosen already")
-            # print(lettersPicked)
-
-            if letters[i][j] in lettersPicked:
-                print("it is true")
-                lettersMatchedGreen = []
-                lettersMatchedOrange = []
-                for k in range(len(secret)):
-                    
-                    if letters[i][j] in secret:
-                        if letters[i][j] == secret[k]:
-                            ltrcolor[i][j] = "Green"
-                            lettersMatchedGreen.append(letters[i][j])
-                        else:
-                            # print("I was changed to orange", lettersPicked.count(letters[i][j]))
-                            ltrcolor[i][j] = "Orange"
-                            lettersMatchedOrange.append(letters[i][j])
-                        
-                    elif letters[i][j] not in lettersMatchedGreen and letters[i][j] not in lettersMatchedOrange:
-                        ltrcolor[i][j] = "LightSteelBlue4"
-                    
-                
-
-    # for i in range(5):
-
-    # print(letters[i][j] in lettersPicked)
-
-
+    global i, j, lettersMatchedGreen, lettersMatchedOrange
+    for k in range(len(lettersPicked)):
+        for i in range(3):
+            try:
+                j = letters[i].index(lettersPicked[k])
+                if letters[i][j] in secret:
+                    if lettersPicked[k] == secret[k]:
+                        ltrcolor[i][j] = "Green"
+                        lettersMatchedGreen.append(letters[i][j])
+                    elif lettersPicked[k] not in lettersMatchedGreen and lettersPicked[k] not in lettersMatchedOrange:
+                        ltrcolor[i][j] = "Orange"
+                        lettersMatchedOrange.append(letters[i][j])
+                elif letters[i][j] not in lettersMatchedOrange and letters[i][j] not in lettersMatchedGreen:
+                    ltrcolor[i][j] = "LightSteelBlue4"
+            except:
+                pass
 
 def checkGuess(char1, char2, char3, char4, char5):
     global lettersPicked
-    print(wordle.attempts)
+    lettersPicked = []
     chars = [char1, char2, char3, char4, char5]
     for char in chars:
         lettersPicked.append(char)
-    # print(lettersPicked)
     if "" in chars:
         tkinter.messagebox.showinfo("Error", "You must enter 1 letter per box!")
         return
     x = "".join(chars).upper()
-
-    # print(x)
     if len(x) != wordle.WORD_LENGTH:
         tkinter.messagebox.showinfo("Error", f"Word must be {wordle.WORD_LENGTH} characters")
         return
@@ -302,11 +268,6 @@ def checkGuess(char1, char2, char3, char4, char5):
         return
     wordle.attempt(x)
     result = wordle.guess(x)
-    # print("results")
-    # print(*result, sep="\n")
-
-    
-    # print(wordle.attempts)
     checkLtrColor()
     writeboxes()
     
