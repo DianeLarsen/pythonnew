@@ -468,10 +468,6 @@ def open2():
     ResetButton  = Button(RightFrame, text="New Game", background="LightSteelBlue4", font=('Calibri', 16, 'bold'),padx = 3, pady = 3, command=restart)  
     ResetButton.place(x=125, y=475)  
     
-
-
-
-
 def open3():
     top3 = Toplevel()
     top3.title("Hangperson")
@@ -630,8 +626,8 @@ def open3():
         else:
             top3.destroy()
 
-btn1 = Button(MainFrame, text="Silly Libs", width=25, height = 7, padx = 2, pady = 3, command=open1).grid(row = 0, column = 0)
-btn2 = Button(MainFrame, text="WordlePy", width=25, height = 7, padx = 2, pady = 3, command=open2).grid(row = 0, column = 1)
-btn3 = Button(MainFrame, text="Hangperson", width=25, height = 7, padx = 2, pady = 3, command=open3).grid(row = 0, column = 2)
+btn1 = Button(MainFrame, text="Silly Libs", width=20, height = 7, padx = 2, pady = 3, command=open1).grid(row = 0, column = 0)
+btn2 = Button(MainFrame, text="WordlePy", width=20, height = 7, padx = 2, pady = 3, command=open2).grid(row = 0, column = 1)
+btn3 = Button(MainFrame, text="Hangperson", width=20, height = 7, padx = 2, pady = 3, command=open3).grid(row = 0, column = 2)
 
 root.mainloop()

@@ -2,29 +2,53 @@ import random
 import tkinter.messagebox
 from tkinter import*
 
-root = Tk()
-root.geometry("700x300+0+0")
-root.title("Puzzle Games")
-root.configure(background="Black")
 
-TopsRoot = Frame(root, bg = "Black", pady = 2, width = 800, height = 100, relief = RIDGE)
-TopsRoot.grid(row=0, column=0, columnspan=2)
+def main():
+    root = Tk()
+    root.geometry("700x300+0+0")
+    root.title("Puzzle Games")
+    root.configure(background="Black")
 
-lblTitle = Label(TopsRoot, font=('arial', 60, 'bold'), text="Puzzle Games", bd=10, bg="Black", fg="Cornsilk", justify=CENTER)
-lblTitle.grid(row=0, column=0, columnspan=2)
+    TopsRoot = Frame(root, bg = "Black", pady = 2, width = 800, height = 100, relief = RIDGE)
+    TopsRoot.grid(row=0, column=0, columnspan=2)
 
-MainFrame = Frame(root, bg = "Grey", bd = 10, width = 700, height = 200, padx = 2, pady = 3, relief = RIDGE)
-MainFrame.grid(row=1, column=0, padx = 30)
+    lblTitle = Label(TopsRoot, font=('arial', 60, 'bold'), text="Puzzle Games", bd=10, bg="Black", fg="Cornsilk", justify=CENTER)
+    lblTitle.grid(row=0, column=0, columnspan=2)
 
+    MainFrame = Frame(root, bg = "Grey", bd = 10, width = 700, height = 200, padx = 2, pady = 3, relief = RIDGE)
+    MainFrame.grid(row=1, column=0, padx = 30)
 
+    btn1 = Button(MainFrame, text="Tic Tac Toe", width=30, height = 7, padx = 2, pady = 3, command=open2).grid(row = 0, column = 0)
+    btn2 = Button(MainFrame, text="Number Slider", width=30, height = 7, padx = 2, pady = 3, command=open1).grid(row = 0, column = 1)
 
+    
+    root.mainloop()
 
+def upDateNumClicks(numClicks):
+    global dispClicks
+    dispClicks = StringVar()
+    dispClicks.set("Num of Clicks" + "\n" + str(numClicks))
+def gameStatusUpdate(gameStatus):
+    global gameStatusStr
+    gameStatusStr = StringVar()
+    gameStatusStr.set(gameStatus)
+def checker (buttons):
+    global click
+    click = BooleanVar()
+    if buttons["text"] == " " and click == True:
+        buttons["text"] = "X"
+        click = False
+        open2.scorekeeper()
+    elif buttons["text"] == " " and click == False:
+        buttons["text"] = "O"
+        click = True
+        open2.scorekeeper()
 def open1():
     top = Toplevel()
     top.geometry("1350x750+0+0")
     top.title("Puzzle Game")
     top.configure(background="Black")
-
+    
     Tops = Frame(top, bg = "Black", pady = 2, width = 1350, height = 100, relief = RIDGE)
     Tops.grid(row=0, column=0)
 
@@ -52,14 +76,11 @@ def open1():
     numClicks = 0
     global dispClicks
     dispClicks = StringVar()
-    dispClicks.set("# of Clicks" + "\n" + "0")
-
+    dispClicks.set("Num of Clicks" + "\n" + str(numClicks))
     global gameStatusStr
     gameStatusStr = StringVar()
 
-    def upDateNumClicks():
-        global numClicks, dispClicks
-        dispClicks.set("Num of Clicks" + "\n" + str(numClicks))
+
 
     def gameStatusUpdate(gameStatus):
         global gameStatusStr
@@ -135,7 +156,7 @@ def open1():
                         winCheck()
                         break           
             numClicks += 1
-            upDateNumClicks()
+            upDateNumClicks(numClicks)
     def winCheck():
         lost = False
         if numClicks == 0:
@@ -188,16 +209,7 @@ def open2():
     global click
     click = True
 
-    def checker (buttons):
-        global click
-        if buttons["text"] == " " and click == True:
-            buttons["text"] = "X"
-            click = False
-            scorekeeper()
-        elif buttons["text"] == " " and click == False:
-            buttons["text"] = "O"
-            click = True
-            scorekeeper()
+
 
     def scorekeeper():
         if button1['text'] == "X" and button2['text'] == "X" and button3['text'] == "X":
@@ -403,7 +415,8 @@ def open2():
     button9.grid(row = 3, column = 2, sticky = S+N+E+W)
 
 
-btn1 = Button(MainFrame, text="Tic Tac Toe", width=30, height = 7, padx = 2, pady = 3, command=open2).grid(row = 0, column = 0)
-btn2 = Button(MainFrame, text="Number Slider", width=30, height = 7, padx = 2, pady = 3, command=open1).grid(row = 0, column = 1)
 
-root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
