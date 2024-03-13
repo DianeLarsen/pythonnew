@@ -19,4 +19,4 @@ def main():
         if letter in "abcdefghijklmnopqrstuvwxyz":
             print(f"The '{letter}' character was found {letters[letter]} times")
     print("--- End report ---")
-main()
+main
