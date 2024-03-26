@@ -1,0 +1,75 @@
+{
+    "common_specs": [
+        "mounting_type",
+        "package"
+    ],
+    "capacitors": [
+        "capacity",
+        "voltage",
+        "tolerance",
+        "temperature_coefficient",
+        "test"
+    ],
+    "resistors": [
+        "resistance",
+        "tolerance",
+        "power_rating"
+    ],
+    "diodes": [
+        "forward_current",
+        "reverse_voltage",
+        "configuration",
+        "package"
+    ],
+    "inductors": [
+        "inductance",
+        "tolerance",
+        "current_rating",
+        "saturation_current",
+        "dc_resistance"
+    ],
+    "chips": [
+        "type",
+        "functionality",
+        "number_of_pins",
+        "frequency"
+    ],
+    "FETs": [
+        "type",
+        "drain_to_source_voltage",
+        "current",
+        "gate_to_source_voltage"
+    ],
+    "screws": [
+        "length",
+        "material",
+        "head_type"
+    ],
+    "nails": [
+        "length",
+        "material",
+        "type"
+    ],
+    "brackets": [
+        "size",
+        "material",
+        "thickness"
+    ],
+    "screens": [
+        "size",
+        "resolution",
+        "type",
+        "interface"
+    ],
+    "batteries": [
+        "type",
+        "voltage",
+        "capacity",
+        "form_factor"
+    ],
+    "covers": [
+        "dimensions",
+        "material",
+        "compatibility"
+    ]
+}

@@ -1,280 +1,339 @@
 {
-    "capacitors": {
-        "100uF_25V": {
-            "category": "components",
-            "part_type": "capacitors",
-            "part": "100uF_25V",
-            "quantity": 100,
-            "location": "Shelf A1",
-            "supplier": "ElectroParts Inc.",
-            "specs": {
-                "tolerance": "\u00b15%",
-                "temperature_coefficient": "-55 to +105\u00b0C"
+    "components": {
+        "capacitors": {
+            "100uF_25V": {
+                "part": "100uF_25V",
+                "quantity": 100,
+                "location": "Shelf A1",
+                "supplier": "ElectroParts Inc.",
+                "specs": {
+                    "capacity": "100uF",
+                    "voltage": "25V",
+                    "tolerance": "\u00b15%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
+                },
+                "comments": ""
             },
-            "comments": ""
+            "470uF_10V": {
+                "part": "470uF_10V",
+                "quantity": 50,
+                "location": "Shelf A2",
+                "supplier": "Components Co.",
+                "specs": {
+                    "capacity": "470uF",
+                    "voltage": "10V",
+                    "tolerance": "\u00b110%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
+                },
+                "comments": ""
+            },
+            "100mF_10V": {
+                "part": "100mF_10V",
+                "quantity": 1,
+                "location": "EEL1",
+                "supplier": "TechHub",
+                "specs": {
+                    "capacity": "100mF",
+                    "voltage": "10V",
+                    "tolerance": "1%",
+                    "temperature_coefficient": "",
+                    "test": "test"
+                },
+                "comments": "added a spec"
+            }
         },
-        "470uF_10V": {
-            "category": "components",
-            "part_type": "capacitors",
-            "part": "470uF_10V",
-            "quantity": 50,
-            "location": "Shelf A2",
-            "supplier": "Components Co.",
-            "specs": {
-                "tolerance": "\u00b110%",
-                "temperature_coefficient": "-55 to +105\u00b0C"
+        "resistors": {
+            "220_ohm_1W": {
+                "part": "220_ohm_1W",
+                "quantity": 200,
+                "location": "Shelf B1",
+                "supplier": "ResistAll",
+                "specs": {
+                    "resistance": "220 ohm",
+                    "tolerance": "\u00b11%",
+                    "power_rating": "1W"
+                },
+                "comments": ""
             },
-            "comments": ""
-        }
-    },
-    "resistors": {
-        "220_ohm_1W": {
-            "category": "components",
-            "part_type": "resistors",
-            "part": "220_ohm_1W",
-            "quantity": 200,
-            "location": "Shelf B1",
-            "supplier": "ResistAll",
-            "specs": {
-                "resistance": "220 ohm",
-                "tolerance": "\u00b11%",
-                "power_rating": "1W"
-            },
-            "comments": ""
+            "10K_ohm_0.5W": {
+                "part": "10K_ohm_0.5W",
+                "quantity": 150,
+                "location": "Shelf B2",
+                "supplier": "OhmSource",
+                "specs": {
+                    "resistance": "10K ohm",
+                    "tolerance": "\u00b15%",
+                    "power_rating": "0.5W"
+                },
+                "comments": ""
+            }
         },
-        "10K_ohm_0.5W": {
-            "category": "components",
-            "part_type": "resistors",
-            "part": "10K_ohm_0.5W",
-            "quantity": 150,
-            "location": "Shelf B2",
-            "supplier": "OhmSource",
-            "specs": {
-                "resistance": "10K ohm",
-                "tolerance": "\u00b15%",
-                "power_rating": "0.5W"
+        "diodes": {
+            "1N4001": {
+                "part": "1N4001",
+                "quantity": 200,
+                "location": "Shelf C1",
+                "supplier": "DiodeDynamics",
+                "specs": {
+                    "forward_voltage": "1V",
+                    "current": "1A",
+                    "type": "Rectifier"
+                },
+                "comments": "Commonly used for rectifying low-power signals"
             },
-            "comments": ""
-        }
-    },
-    "screwdriver_set": {
-        "": {
-            "category": "tools",
-            "part_type": "screwdriver_set",
-            "part": "",
-            "quantity": 4,
-            "location": "Tool Rack",
-            "supplier": "ToolMakers Inc.",
-            "specs": {
-                "pieces": "6",
-                "handle_material": "rubber"
-            },
-            "comments": ""
-        }
-    },
-    "soldering_iron": {
-        "": {
-            "category": "tools",
-            "part_type": "soldering_iron",
-            "part": "",
-            "quantity": 2,
-            "location": "Tool Rack",
-            "supplier": "HeatPro",
-            "specs": {
-                "wattage": "60W",
-                "temperature_range": "200\u00b0C - 450\u00b0C"
-            },
-            "comments": ""
-        }
-    },
-    "electrical_tape": {
-        "": {
-            "category": "tools",
-            "part_type": "electrical_tape",
-            "part": "",
-            "quantity": 10,
-            "location": "Drawer 1",
-            "supplier": "GeneralSupplies",
-            "specs": {
-                "width": "20mm",
-                "length": "10m",
-                "color": "black"
-            },
-            "comments": ""
-        }
-    },
-    "double_sided_tape": {
-        "": {
-            "category": "tools",
-            "part_type": "double_sided_tape",
-            "part": "",
-            "quantity": 5,
-            "location": "Drawer 2",
-            "supplier": "AdhesiveWorld",
-            "specs": {
-                "width": "10mm",
-                "length": "5m",
-                "adhesive_type": "permanent"
-            },
-            "comments": ""
-        }
-    },
-    "printers": {
-        "laser_printer_3000": {
-            "category": "office equipment",
-            "part_type": "printers",
-            "part": "laser_printer_3000",
-            "quantity": 3,
-            "location": "Office Supply Room",
-            "supplier": "PrintTech",
-            "specs": {
-                "type": "Laser",
-                "color_capability": "Monochrome",
-                "connectivity": "USB, Ethernet"
-            },
-            "comments": ""
+            "1N4148": {
+                "part": "1N4148",
+                "quantity": 150,
+                "location": "Shelf C2",
+                "supplier": "DiodeDynamics",
+                "specs": {
+                    "forward_voltage": "0.7V",
+                    "current": "300mA",
+                    "type": "Switching"
+                },
+                "comments": "High-speed switching diode"
+            }
         },
-        "inkjet_color_printer_X2": {
-            "category": "office equipment",
-            "part_type": "printers",
-            "part": "inkjet_color_printer_X2",
-            "quantity": 2,
-            "location": "Design Department",
-            "supplier": "InkSolutions",
-            "specs": {
-                "type": "Inkjet",
-                "color_capability": "Color",
-                "connectivity": "Wi-Fi, USB"
-            },
-            "comments": ""
+        "inductors": {
+            "10uH_inductor": {
+                "part": "10uH_inductor",
+                "quantity": 100,
+                "location": "Shelf D1",
+                "supplier": "InductoTech",
+                "specs": {
+                    "inductance": "10uH",
+                    "current_rating": "2A",
+                    "tolerance": "\u00b110%"
+                },
+                "comments": "Suitable for high-frequency circuits"
+            }
+        },
+        "chips": {
+            "ATmega328P": {
+                "part": "ATmega328P",
+                "quantity": 50,
+                "location": "Shelf E1",
+                "supplier": "MicroControl",
+                "specs": {
+                    "type": "Microcontroller",
+                    "pin_count": "28"
+                },
+                "comments": "Widely used in hobbyist projects"
+            }
+        },
+        "FETs": {
+            "IRF520": {
+                "part": "IRF520",
+                "quantity": 75,
+                "location": "Shelf F1",
+                "supplier": "TransistorTech",
+                "specs": {
+                    "type": "N-channel",
+                    "voltage_rating": "100V",
+                    "current_rating": "9.7A"
+                },
+                "comments": "Useful for switching high-power loads"
+            }
         }
     },
-    "computers": {
-        "office_desktop_500": {
-            "category": "office equipment",
-            "part_type": "computers",
-            "part": "office_desktop_500",
-            "quantity": 10,
-            "location": "IT Department",
-            "supplier": "CompFast",
-            "specs": {
-                "processor": "Intel i5",
-                "RAM": "8GB",
-                "storage": "256GB SSD"
-            },
-            "comments": ""
+    "tools": {
+        "screwdriver_set": {
+            "": {
+                "part": "",
+                "quantity": 4,
+                "location": "Tool Rack",
+                "supplier": "ToolMakers Inc.",
+                "specs": {
+                    "pieces": "6",
+                    "handle_material": "rubber"
+                },
+                "comments": ""
+            }
+        },
+        "soldering_iron": {
+            "": {
+                "part": "",
+                "quantity": 2,
+                "location": "Tool Rack",
+                "supplier": "HeatPro",
+                "specs": {
+                    "wattage": "60W",
+                    "temperature_range": "200\u00b0C - 450\u00b0C"
+                },
+                "comments": ""
+            }
+        },
+        "electrical_tape": {
+            "": {
+                "part": "",
+                "quantity": 10,
+                "location": "Drawer 1",
+                "supplier": "GeneralSupplies",
+                "specs": {
+                    "width": "20mm",
+                    "length": "10m",
+                    "color": "black"
+                },
+                "comments": ""
+            }
+        },
+        "double_sided_tape": {
+            "": {
+                "part": "",
+                "quantity": 5,
+                "location": "Drawer 2",
+                "supplier": "AdhesiveWorld",
+                "specs": {
+                    "width": "10mm",
+                    "length": "5m",
+                    "adhesive_type": "permanent"
+                },
+                "comments": ""
+            }
         }
     },
-    "monitors": {
-        "ultra_wide_monitor": {
-            "category": "office equipment",
-            "part_type": "monitors",
-            "part": "ultra_wide_monitor",
-            "quantity": 5,
-            "location": "Design Department",
-            "supplier": "ScreenTech",
-            "specs": {
-                "size": "34 inches",
-                "resolution": "3440 x 1440",
-                "refresh_rate": "100Hz"
+    "office equipment": {
+        "printers": {
+            "laser_printer_3000": {
+                "part": "laser_printer_3000",
+                "quantity": 3,
+                "location": "Office Supply Room",
+                "supplier": "PrintTech",
+                "specs": {
+                    "type": "Laser",
+                    "color_capability": "Monochrome",
+                    "connectivity": "USB, Ethernet"
+                },
+                "comments": ""
             },
-            "comments": ""
+            "inkjet_color_printer_X2": {
+                "part": "inkjet_color_printer_X2",
+                "quantity": 2,
+                "location": "Design Department",
+                "supplier": "InkSolutions",
+                "specs": {
+                    "type": "Inkjet",
+                    "color_capability": "Color",
+                    "connectivity": "Wi-Fi, USB"
+                },
+                "comments": ""
+            }
+        },
+        "computers": {
+            "office_desktop_500": {
+                "part": "office_desktop_500",
+                "quantity": 10,
+                "location": "IT Department",
+                "supplier": "CompFast",
+                "specs": {
+                    "processor": "Intel i5",
+                    "RAM": "8GB",
+                    "storage": "256GB SSD"
+                },
+                "comments": ""
+            }
+        },
+        "monitors": {
+            "ultra_wide_monitor": {
+                "part": "ultra_wide_monitor",
+                "quantity": 5,
+                "location": "Design Department",
+                "supplier": "ScreenTech",
+                "specs": {
+                    "size": "34 inches",
+                    "resolution": "3440 x 1440",
+                    "refresh_rate": "100Hz"
+                },
+                "comments": ""
+            }
         }
     },
-    "screws": {
-        "m3_pan_head": {
-            "category": "hardware",
-            "part_type": "screws",
-            "part": "m3_pan_head",
-            "quantity": 1000,
-            "location": "Hardware Shelf 1",
-            "supplier": "BuildRight",
-            "specs": {
-                "length": "10mm",
-                "material": "Stainless steel",
-                "head_type": "Pan head"
-            },
-            "comments": ""
+    "hardware": {
+        "screws": {
+            "m3_pan_head": {
+                "part": "m3_pan_head",
+                "quantity": 1000,
+                "location": "Hardware Shelf 1",
+                "supplier": "BuildRight",
+                "specs": {
+                    "length": "10mm",
+                    "material": "Stainless steel",
+                    "head_type": "Pan head"
+                },
+                "comments": ""
+            }
+        },
+        "nails": {
+            "steel_nail_2inch": {
+                "part": "steel_nail_2inch",
+                "quantity": 500,
+                "location": "Hardware Shelf 2",
+                "supplier": "FastenPro",
+                "specs": {
+                    "length": "2 inches",
+                    "material": "Steel",
+                    "type": "Common nail"
+                },
+                "comments": ""
+            }
+        },
+        "brackets": {
+            "angle_bracket": {
+                "part": "angle_bracket",
+                "quantity": 100,
+                "location": "Hardware Shelf 3",
+                "supplier": "CornerStrong",
+                "specs": {
+                    "size": "50mm x 50mm x 40mm",
+                    "material": "Aluminum",
+                    "thickness": "3mm"
+                },
+                "comments": ""
+            }
         }
     },
-    "nails": {
-        "steel_nail_2inch": {
-            "category": "hardware",
-            "part_type": "nails",
-            "part": "steel_nail_2inch",
-            "quantity": 500,
-            "location": "Hardware Shelf 2",
-            "supplier": "FastenPro",
-            "specs": {
-                "length": "2 inches",
-                "material": "Steel",
-                "type": "Common nail"
-            },
-            "comments": ""
-        }
-    },
-    "brackets": {
-        "angle_bracket": {
-            "category": "hardware",
-            "part_type": "brackets",
-            "part": "angle_bracket",
-            "quantity": 100,
-            "location": "Hardware Shelf 3",
-            "supplier": "CornerStrong",
-            "specs": {
-                "size": "50mm x 50mm x 40mm",
-                "material": "Aluminum",
-                "thickness": "3mm"
-            },
-            "comments": ""
-        }
-    },
-    "screens": {
-        "smartphone_oled_screen_6inch": {
-            "category": "device parts",
-            "part_type": "screens",
-            "part": "smartphone_oled_screen_6inch",
-            "quantity": 20,
-            "location": "Parts Room 1",
-            "supplier": "ScreenMasters",
-            "specs": {
-                "type": "OLED",
-                "size": "6 inches",
-                "resolution": "2340 x 1080"
-            },
-            "comments": ""
-        }
-    },
-    "batteries": {
-        "lithium_ion_3000mAh": {
-            "category": "device parts",
-            "part_type": "batteries",
-            "part": "lithium_ion_3000mAh",
-            "quantity": 50,
-            "location": "Parts Room 2",
-            "supplier": "EnergyPlus",
-            "specs": {
-                "type": "Lithium-ion",
-                "capacity": "3000mAh",
-                "voltage": "3.7V"
-            },
-            "comments": ""
-        }
-    },
-    "covers": {
-        "smartphone_cover_rugged": {
-            "category": "device parts",
-            "part_type": "covers",
-            "part": "smartphone_cover_rugged",
-            "quantity": 30,
-            "location": "Parts Room 3",
-            "supplier": "CoverCraft",
-            "specs": {
-                "material": "Silicone",
-                "compatibility": "Universal 6'' devices",
-                "features": "Shock-resistant, Water-resistant"
-            },
-            "comments": ""
+    "device parts": {
+        "screens": {
+            "smartphone_oled_screen_6inch": {
+                "part": "smartphone_oled_screen_6inch",
+                "quantity": 20,
+                "location": "Parts Room 1",
+                "supplier": "ScreenMasters",
+                "specs": {
+                    "type": "OLED",
+                    "size": "6 inches",
+                    "resolution": "2340 x 1080"
+                },
+                "comments": ""
+            }
+        },
+        "batteries": {
+            "lithium_ion_3000mAh": {
+                "part": "lithium_ion_3000mAh",
+                "quantity": 50,
+                "location": "Parts Room 2",
+                "supplier": "EnergyPlus",
+                "specs": {
+                    "type": "Lithium-ion",
+                    "capacity": "3000mAh",
+                    "voltage": "3.7V"
+                },
+                "comments": ""
+            }
+        },
+        "covers": {
+            "smartphone_cover_rugged": {
+                "part": "smartphone_cover_rugged",
+                "quantity": 30,
+                "location": "Parts Room 3",
+                "supplier": "CoverCraft",
+                "specs": {
+                    "material": "Silicone",
+                    "compatibility": "Universal 6'' devices",
+                    "features": "Shock-resistant, Water-resistant"
+                },
+                "comments": ""
+            }
         }
     }
 }
