@@ -40,6 +40,150 @@
                     "test": "test"
                 },
                 "comments": "added a spec"
+            },
+            "120uF_5V": {
+                "part": "120uF_5V",
+                "quantity": 3,
+                "location": "EELAB1",
+                "supplier": "This guy",
+                "specs": {
+                    "capacity": "120uF",
+                    "voltage": "5V",
+                    "tolerance": "1%",
+                    "temperature_coefficient": "",
+                    "test": ""
+                },
+                "comments": "This is a new part"
+            },
+            "330uF_16V": {
+                "part": "330uF_16V",
+                "quantity": 75,
+                "location": "Shelf B1",
+                "supplier": "GlobalParts Inc.",
+                "specs": {
+                    "capacity": "330uF",
+                    "voltage": "16V",
+                    "tolerance": "±20%",
+                    "temperature_coefficient": "-40 to +85°C"
+                },
+                "comments": "Bulk purchase discount applied"
+            },
+            "22uF_50V": {
+                "part": "22uF_50V",
+                "quantity": 200,
+                "location": "Shelf C3",
+                "supplier": "ElectroWorld",
+                "specs": {
+                    "capacity": "22uF",
+                    "voltage": "50V",
+                    "tolerance": "±10%",
+                    "temperature_coefficient": "-55 to +105°C"
+                },
+                "comments": "For high voltage projects"
+            },
+            "1F_5V": {
+                "part": "1F_5V",
+                "quantity": 10,
+                "location": "Bin 4A",
+                "supplier": "InnovateElectronics",
+                "specs": {
+                    "capacity": "1F",
+                    "voltage": "5V",
+                    "tolerance": "±5%",
+                    "temperature_coefficient": ""
+                },
+                "comments": "Super capacitor for energy storage projects"
+            },
+            "47uF_63V": {
+                "part": "47uF_63V",
+                "quantity": 30,
+                "location": "Shelf D2",
+                "supplier": "PartsQuick",
+                "specs": {
+                    "capacity": "47uF",
+                    "voltage": "63V",
+                    "tolerance": "±10%",
+                    "temperature_coefficient": "-55 to +105°C"
+                },
+                "comments": ""
+            },
+            "10uF_100V": {
+                "part": "10uF_100V",
+                "quantity": 40,
+                "location": "Shelf E1",
+                "supplier": "QuickComponents",
+                "specs": {
+                    "capacity": "10uF",
+                    "voltage": "100V",
+                    "tolerance": "±5%",
+                    "temperature_coefficient": "-55 to +105°C"
+                },
+                "comments": "High voltage rating"
+            },
+            "560uF_6.3V": {
+                "part": "560uF_6.3V",
+                "quantity": 60,
+                "location": "Shelf F2",
+                "supplier": "ElectroMax",
+                "specs": {
+                    "capacity": "560uF",
+                    "voltage": "6.3V",
+                    "tolerance": "±20%",
+                    "temperature_coefficient": "-40 to +85°C"
+                },
+                "comments": ""
+            },
+            "220uF_35V": {
+                "part": "220uF_35V",
+                "quantity": 100,
+                "location": "Shelf G1",
+                "supplier": "ComponentZone",
+                "specs": {
+                    "capacity": "220uF",
+                    "voltage": "35V",
+                    "tolerance": "±10%",
+                    "temperature_coefficient": "-55 to +105°C"
+                },
+                "comments": "Replenished stock"
+            },
+            "68uF_450V": {
+                "part": "68uF_450V",
+                "quantity": 25,
+                "location": "Vault 3",
+                "supplier": "HighVolt Supplies",
+                "specs": {
+                    "capacity": "68uF",
+                    "voltage": "450V",
+                    "tolerance": "±20%",
+                    "temperature_coefficient": "-25 to +85°C"
+                },
+                "comments": "Special order for high voltage applications"
+            },
+            "2.2uF_250V": {
+                "part": "2.2uF_250V",
+                "quantity": 50,
+                "location": "Shelf H2",
+                "supplier": "GlobalElectro",
+                "specs": {
+                    "capacity": "2.2uF",
+                    "voltage": "250V",
+                    "tolerance": "±10%",
+                    "temperature_coefficient": "-40 to +105°C"
+                },
+                "comments": "For audio equipment"
+            },
+            "1000uF_10V": {
+                "part": "1000uF_10V",
+                "quantity": 80,
+                "location": "Shelf I1",
+                "supplier": "ElectroTech",
+                "specs": {
+                    "capacity": "1000uF",
+                    "voltage": "10V",
+                    "tolerance": "±20%",
+                    "temperature_coefficient": "-20 to +85°C"
+                },
+                "comments": "High capacity for power supplies"
             }
         },
         "resistors": {
@@ -335,5 +479,8 @@
                 "comments": ""
             }
         }
-    }
+    },
+    "power supplies": {},
+    "new": {},
+    "newtome": {}
 }

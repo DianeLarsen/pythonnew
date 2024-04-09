@@ -1,12 +1,5 @@
 from manage import Inventory, InventoryItem, InventoryManager
 
-categories = {
-    "components": ["capacitors", "resistors", "diodes", "inductors", "chips", "FETs"], 
-    "tools": ["screwdrivers", "pliers", "soldering irons"], 
-    "office equipment": ["printers", "computers", "monitors"], 
-    "hardware": ["screws", "nails", "brackets"], 
-    "device parts": ["screens", "batteries", "covers"]}
-
 
 def get_required_input(prompt, allow_blank=False):
     """Prompt user until valid input is provided."""
@@ -36,74 +29,78 @@ def get_user_command():
             print("Invalid command. Please enter the first letter of one of the actions (View, Add, Delete, Update, Search, Quit).")
 
 
-def handle_action(action):
+def handle_action(action, categories):
     print(f"Handling {action}...")
     category = select_category(categories)
     if category == 'quit':
         return 'quit'
 
-    subcategory = select_subcategory(category)
+    subcategory = select_subcategory(category, categories)
     if subcategory == 'quit':
         return 'quit'
 
     # Proceed with action handling for the selected subcategory
     print(f"Would handle {action} for {subcategory} in {category}.")
-
+    return {category, subcategory}
 
 def select_category(categories):
     print("Select a category by entering its number, or type 'quit' to exit:")
     keys = list(categories.keys())
     for i, category in enumerate(keys, start=1):
         print(f"{i}. {category}")
-    print("Type 'quit' to exit.")
+    print("Type 'quit' to exit or 'exit' to return to menu.")
 
     while True:
-        user_input = input()
-        if user_input.lower() == 'quit':
-            return 'quit'
+        user_input = get_required_input("Your choice: ", allow_blank=True).lower()
+        if user_input == 'quit':
+            return "quit"
+        if user_input == 'exit':
+            return 'exit'
         try:
-            category_num = int(user_input) - 1
-            if category_num < 0 or category_num >= len(keys):
-                raise ValueError("Invalid number.")
-            category_name = keys[category_num]
-
-            return category_name
+ 
+            choice = int(user_input) - 1
+            if choice in range(len(categories)):
+                return list(categories.keys())[choice]
+            raise ValueError
         except ValueError as e:
             print(f"Your choice was not listed.  Please enter a valid number from the list or type 'quit' to exit: ")
 
 
-def select_subcategory(category_name):
-    sub_categories = categories[category_name]
-    print(
-        f"Select a sub-category from {category_name} by entering its number, or type 'quit' to exit: ")
-    for i, sub_category in enumerate(sub_categories, start=1):
-        print(f"{i}. {sub_category}")
-    print("Type 'quit' to exit.")
+def select_subcategory(category, categories):
+    
+    if not category:
+        return "quit"
+    print(f"Select a subcategory from '{category}' (or 'quit' to exit or 'exit' to return to main menu):")
+    
+    for i, subcategory in enumerate(categories[category], start=1):
+        print(f"{i}. {subcategory}")
+    print("Type 'quit' to exit or 'exit' to return to menu.")
 
     while True:
-        user_input = input()
-        if user_input.lower() == 'quit':
+        choice = get_required_input("Your choice: ", allow_blank=True).lower()
+        if choice == 'quit':
             return 'quit'
+        if choice == 'exit':
+            return 'exit'
         try:
-            sub_category_num = int(user_input) - 1
-            if sub_category_num < 0 or sub_category_num >= len(sub_categories):
-                raise ValueError("Invalid number.")
-            sub_category_name = sub_categories[sub_category_num]
-            return sub_category_name
+            choice = int(choice) - 1
+            if choice in range(len(categories[category])):
+                return categories[category][choice]
+            raise ValueError
         except ValueError as e:
             print(
-                f"{e} Please enter a valid number from the list or type 'quit' to exit.")
+                f"{e} Please enter a valid number from the list or type 'quit' to exit or 'exit' to return to main menu.")
 
-def display_search_results(found_items):
+def display_results(found_items):
     if not found_items:
         print("No items found matching criteria.")
         return
 
     while True:  # Keep showing the list until the user decides to exit to the main menu
-        print("\nSearch Results:")
+        print("\nResults:")
         # Display a concise list of found items
-        for index, (category_name, part_type, part_name, item_details) in enumerate(found_items, start=1):
-            print(f"{index}. {part_name} - Location: {item_details['location']}")
+        for index, (part, item_details) in enumerate(found_items, start=1):
+            print(f"{index}. {part} - Location: {item_details['location']}")
 
         print("\nEnter the number of an item to see more details, or type 'exit' to return to the main menu.")
         choice = input("Your choice: ").strip().lower()
@@ -113,8 +110,8 @@ def display_search_results(found_items):
 
         if choice.isdigit() and 1 <= int(choice) <= len(found_items):
             index = int(choice) - 1
-            _, _, part_name, item_details = found_items[index]
-            print(f"\nDetails for {part_name}:")
+            _, _, part, item_details = found_items[index]
+            print(f"\nDetails for {part}:")
             for key, value in item_details.items():
                 if key == 'specs':
                     print(f"  {key.capitalize()}:")
@@ -125,172 +122,211 @@ def display_search_results(found_items):
             input("\nPress Enter to return to the list...")  # Pause before showing the list again
         else:
             print("Invalid selection. Please enter a valid number or 'exit' to return to the main menu.")
+            
+def call_categories(inventory):
+    
+    return inventory.extract_categories_and_subcategories()
 
+def add_item_workflow(inventory, categories):
+
+    while True:
+        category_name = select_category(categories)
+        if category_name == 'quit':  # Allow user to quit during category selection
+            print("Exiting program.")
+            break
+        elif category_name == 'exit':
+            print("Returning to Main Meu.")
+            get_user_command()
+        else:
+            sub_category_name = select_subcategory(category_name, categories)
+            if sub_category_name == 'quit':  # Allow user to quit during subcategory selection
+                print("Exiting program.")
+                break
+            elif sub_category_name == 'exit':
+                print("Returning to Main Meu.")
+                get_user_command()
+                break
+            # Display existing categories with an option to add a new one
+            # print("Select a category by number, 'n' to add a new category, or type 'quit' to exit:")
+            for i, category in enumerate(categories, 1):
+                print(f"{i}. {category}")
+            print(f"{len(categories) + 1}. Add new category")
+
+        choice = input("Your choice: ").lower()
+        
+        if choice == 'quit':
+            print("Exiting program.")
+            break  # Exit the add item workflow and go back to the main menu
+        elif int(choice) == len(categories) + 1:  # Adjusted to handle dynamic category count
+            new_category = input("Enter the name of the new category: ").strip()
+            if new_category:  # Check if a new category name was actually provided
+                inventory.add_category(new_category)
+                categories = call_categories(inventory)
+                # Add the new category to the list
+                continue
+            else:
+                print("Invalid category name. Please try again.")
+        else:
+            try:
+                choice_index = int(choice) - 1
+                if choice_index in range(len(categories)):
+                    category_name = categories[choice_index]
+                    # Here, instead of directly handling item addition, ask if user wants to add an item or return to the category list
+                    print(f"Selected category: {category_name}")
+                    add_item = input("Do you want to add an item to this category? (yes/no): ").lower()
+                    if add_item == 'yes':
+                        # Assume we have a function to handle adding items to an existing category
+                        handle_adding_item_to_existing_category(category_name)
+                        break  # After adding an item, break the loop to go back to the main menu
+                else:
+                    raise ValueError
+            except ValueError:
+                print("Invalid selection. Please try again.")
+
+
+
+def handle_adding_item_to_new_category(category_name):
+    # Logic to add an item to the newly created category
+    pass
+
+def handle_adding_item_to_existing_category(category_name):
+    # Logic to add an item to the specified existing category
+    pass
 
 def main():
     inventory = Inventory()  # Initialize your inventory right at the start
     InventoryManager.load_specs_from_file()
+    # inventory_data = InventoryManager.load_inventory() 
+    # categories = InventoryManager.extract_categories(inventory_data)
+    categories = call_categories(inventory)
+
     while True:
         action = get_user_command()  # Get the user's chosen action
         if action == 'quit':
             print("Exiting program.")
             break
 
-        # If the action is not 'quit', proceed to select category and part
-        if action in ['view', 'add', 'delete', 'update', 'search']:
+        # Handle 'view' action
+        if action == 'view':
+            # categories = add_item_workflow(inventory, categories)
             category_name = select_category(categories)
             if category_name == 'quit':  # Allow user to quit during category selection
-                continue
-            sub_category_name = select_subcategory(category_name)
+                print("Exiting program.")
+                break
+            sub_category_name = select_subcategory(category_name, categories)
             if sub_category_name == 'quit':  # Allow user to quit during subcategory selection
-                continue
-
-            part = ""  # Initialize part variable
-            if action in ['view', 'delete', 'update']:
+                print("Exiting program.")
+                break
+            while True:
                 part = input(
-                    "Enter the item's part (or press Enter to return): ").strip()
-
-            # Handle 'view' action
-            if action == 'view':
+                "Enter the item's part or <list> for a list (or press Enter to return): ").strip()
                 if part == "":
-                    continue
-                item_details = inventory.view_item(sub_category_name, part)
-                print(item_details if item_details else "Item not found.")
-
-            # Handle 'add' action
-            elif action == 'add':
-                part = get_required_input("Enter part # or classification (i.e., 100mF_10V): ")
-                quantity = int(get_required_input("Enter quantity: "))
-                location = get_required_input("Enter location: ")
-                supplier = input("Enter supplier: ")
-                specs = InventoryManager.prompt_for_specs(sub_category_name)
-                
-                # New section for additional specs
-                add_more_specs = input("Would you like to add more specifications? (yes/no): ").lower()
-                while add_more_specs == 'yes':
-                    spec_key = input("Enter the specification name: ")
-                    spec_value = input("Enter the specification value: ")
-                    specs[spec_key] = spec_value
+                    break
+                elif part == "list":
+                    start = 0
+                    while True:
+                        listed_items, next_start = inventory.list_items(category_name, sub_category_name, start=start)
+                        display_results(listed_items)
+                        # for _, item in listed_items:
+                        #     print(item['part'])  # Customize based on how you want the items displayed
+                        if next_start is not None:
+                            next_action = input("Press 'list' again for more items, 'back' to return, or 'quit' to exit: ").strip().lower()
+                            if next_action == 'list':
+                                start = next_start
+                                continue
+                            elif next_action == 'back':
+                                break
+                            elif next_action == 'quit':
+                                exit()  # Or handle the quit action as per your program's flow
+                        else:
+                            print("End of list.")
+                            break
+                else:
+                    item_details = inventory.view_item(category_name, sub_category_name, part)
                     
-                    InventoryManager.load_specs_from_file()
-                    # Check if this is a new specification and update the master_specs accordingly
-                    if spec_key not in InventoryManager.master_specs[sub_category_name]:
-                        # Append the new spec name to the list for this sub-category
-                        InventoryManager.master_specs[sub_category_name].append(spec_key)
-                        # Save the updated specs to file
-                        InventoryManager.save_specs_to_file()
-                        print(f"Adding '{spec_key}' to master specifications for '{sub_category_name}'.")
+                    print(item_details)
 
-                    add_more_specs = input("Add more specifications? (yes/no): ").lower()
+        # Handle 'add' action
+        elif action == 'add':
+            
+            categories = add_item_workflow(inventory, categories)
 
-                comments = get_required_input("Enter comments: ")
-                item = InventoryItem(
+        # Handle 'delete' action
+        elif action == 'delete':
+            part = input(
+                "Enter the item's part (or press Enter to return): ").strip()
+            print("Item deleted successfully." if inventory.delete_item(
+                sub_category_name, part) else "Failed to delete item. It might not exist.")
+
+        # Handle 'update' action
+        elif action == 'update':
+            part = input(
+                "Enter the item's part (or press Enter to return): ").strip()
+            new_quantity = int(get_required_input("Enter new quantity: "))
+            new_location = get_required_input("Enter new location: ")
+            new_comments = get_required_input("Enter new comments: ")
+            # Prompt for new specs related to the type
+            new_specs = InventoryItem.prompt_for_specs(sub_category_name)
+            if inventory.update_item(
                     category_name,
                     sub_category_name,
                     part,
-                    quantity,
-                    location,
-                    supplier,
-                    specs,
-                    comments)
-                
-                item_add_success = inventory.add_item(item)
-                if item_add_success is True:
-                    print("Item added successfully.")
-                else:
-                    print("Failed to add item. It might already exist.")
-                    user_choice = input("Choose an option: (1) Override, (2) Update current, (3) Change new: ")
-                    
-                    if user_choice == "1":
-                        # Code to handle override option
-                        inventory.override_item(item)
-                        print("Item overridden successfully.")
-                    elif user_choice == "2":
-                        # Code to handle update current option
-                        inventory.update_current_item(item)
-                        print("Current item updated successfully.")
-                    elif user_choice == "3":
-                        # Code to gather new item changes and call update
-                        # Assuming you have a method to update changes in an item
-                        new_specs = InventoryManager.prompt_for_specs(sub_category_name)
-                        item.update_specs(new_specs)
-                        inventory.update_new_item(item)
-                        print("New item updated with changes successfully.")
-
-
-            # Handle 'delete' action
-            elif action == 'delete':
-                print("Item deleted successfully." if inventory.delete_item(
-                    sub_category_name, part) else "Failed to delete item. It might not exist.")
-
-            # Handle 'update' action
-            elif action == 'update':
-                new_quantity = int(get_required_input("Enter new quantity: "))
-                new_location = get_required_input("Enter new location: ")
-                new_comments = get_required_input("Enter new comments: ")
-                # Prompt for new specs related to the type
-                new_specs = InventoryItem.prompt_for_specs(sub_category_name)
-                if inventory.update_item(
-                        category_name,
-                        sub_category_name,
-                        part,
-                        new_quantity,
-                        new_location,
-                        new_specs,
-                        new_comments):
-                    print("Item updated successfully.")
-                else:
-                    print("Failed to update item. It might not exist.")
-
-            # Handle 'search' action
-            # Handle 'search' action
-            elif action == 'search':
-                search_option = input("Press Enter for advanced search, or type a keyword for basic search: ").strip()
-
-                if search_option == "":
-                    # Advanced search mode
-                    print("Advanced search mode.")
-                    if sub_category_name == "capacitors":
-                        print("Advanced search for capacitors.")
-                        capacity = input("Enter capacity (e.g., 100uF): ").strip()
-                        tolerance = input("Enter tolerance (e.g., ±5%): ").strip()
-                        voltage = input("Enter voltage rating (e.g., 50V): ").strip()
-                        search_criteria = {
-                            'category_name': category_name,
-                            'sub_category_name': sub_category_name,
-                            'capacity': capacity,
-                            'tolerance': tolerance,
-                            'voltage': voltage
-                        }
-                    # Template for adding another subcategory with specific search criteria
-                    # elif sub_category_name == "other_subcategory":
-                    #     # Collect other specific criteria...
-                    else:
-                        print(f"No advanced search available for {sub_category_name}, switching to basic search.")
-                        part = input("Enter search term: ").strip()
-                        search_criteria = {
-                            'part': part,
-                            'category_name': category_name,
-                            'sub_category_name': sub_category_name
-                        }
-                else:
-                    # Basic search with a part keyword
-                    search_criteria = {
-                        'part': search_option,
-                        'category_name': category_name,
-                        'sub_category_name': sub_category_name
-                    }
-
-                # Perform the search with the criteria
-                found_items = inventory.search_items(search_criteria)
-                if found_items:
-                    display_search_results(found_items)
-                else:
-                    print("No items found matching criteria.")
-
-
+                    new_quantity,
+                    new_location,
+                    new_specs,
+                    new_comments):
+                print("Item updated successfully.")
             else:
-                print("Invalid action.")
+                print("Failed to update item. It might not exist.")
+
+        # Handle 'search' action
+        elif action == 'search':
+            search_option = input("Press Enter for advanced search, or type a keyword for basic search: ").strip()
+            subcategory, category = handle_action("Advanced search mode.", categories)
+            print(category, subcategory)
+            if search_option == "":
+                # Advanced search mode
+                if subcategory == "capacitors":
+                    print("Advanced search for capacitors.")
+                    capacity = input("Enter capacity (e.g., 100uF): ").strip()
+                    tolerance = input("Enter tolerance (e.g., ±5%): ").strip()
+                    voltage = input("Enter voltage rating (e.g., 50V): ").strip()
+                    search_criteria = {
+                        'category_name': category,
+                        'sub_category_name': subcategory,
+                        'capacity': capacity,
+                        'tolerance': tolerance,
+                        'voltage': voltage
+                    }
+                # Template for adding another subcategory with specific search criteria
+                # elif sub_category_name == "other_subcategory":
+                #     # Collect other specific criteria...
+                else:
+                    print(f"No advanced search available for {subcategory}, switching to basic search.")
+                    part = input("Enter search term: ").strip()
+                    search_criteria = {
+                        'part': part,
+                        'category_name': category,
+                        'sub_category_name': subcategory
+                    }
+            else:
+                # Basic search with a part keyword
+                search_criteria = {
+                    'part': search_option,
+                    'category_name': category,
+                    'sub_category_name': subcategory
+                }
+
+            # Perform the search with the criteria
+            found_items = inventory.search_items(search_criteria)
+            if found_items:
+                display_results(found_items)
+            else:
+                print("No items found matching criteria.")
+
+
+        else:
+            print("Invalid action.")
 
 
 if __name__ == "__main__":

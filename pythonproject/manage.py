@@ -1,6 +1,5 @@
 import json
 
-
 class InventoryItem:
     def __init__(
             self,
@@ -36,9 +35,6 @@ class InventoryItem:
         """Instantiate an InventoryItem from a dictionary."""
         return cls(**data)
 
-   
-
-
 class Inventory:
     def __init__(self):
         self.items = {}
@@ -54,7 +50,11 @@ class Inventory:
             print("There was an error decoding the inventory file.")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
+            
+    def item_exists(self, category, part_type, part):
+        item_details = self.items[category][part_type][part]
+        return True, item_details
+    
     def save_items(self):
         try:
             with open('inventory.json', 'w') as file:
@@ -66,26 +66,13 @@ class Inventory:
         return f"{part_type}:{part}"
 
     def add_item(self, item, force_add=False):
-        """
-        Adds an item to the inventory, updates an existing item, or overrides an existing item.
-        
-        Parameters:
-        - item: InventoryItem instance to be added.
-        - force_add: Boolean indicating whether to force addition of the item (True to override).
-        
-        Returns:
-        - True if the item was successfully added or updated.
-        - "exists_diff" if the item exists but is not equivalent, and force_add is False.
-        - False if the item exists with the same supplier and specs.
-        """
-        item_dict = item.to_dict()
-        category_exists = item.category in self.items
-        part_type_exists = category_exists and item.part_type in self.items[item.category]
-        item_exists = part_type_exists and item.part in self.items[item.category][item.part_type]
 
-        if item_exists:
-            existing_item = self.items[item.category][item.part_type][item.part]
-            if self.items_are_equivalent(existing_item, item_dict):
+        exists, existing_item_details = self.item_exists(item.category, item.part_type, item.part)
+        item_dict = item.to_dict()
+
+        if exists:
+            # existing_item = self.items[item.category][item.part_type][item.part]
+            if self.items_are_equivalent(existing_item_details, item_dict):
                 print(f"Item {item.part} already exists with the same supplier and specs.")
                 return False
             else:
@@ -100,15 +87,64 @@ class Inventory:
                     return "exists_diff"
         else:
             # Add new item if it doesn't exist.
-            if not category_exists:
+            if item.category not in self.items:
                 self.items[item.category] = {}
-            if not part_type_exists:
+            if item.part_type not in self.items[item.category]:
                 self.items[item.category][item.part_type] = {}
             self.items[item.category][item.part_type][item.part] = item_dict
             self.save_items()
             print(f"Item {item.part} added successfully in {item.category} > {item.part_type}.")
             return True
         
+    def list_items(self, category_name, sub_category_name, start=0, limit=10):
+        if category_name in self.items and sub_category_name in self.items[category_name]:
+            sub_category_items = list(self.items[category_name][sub_category_name].items())
+            end = start + limit
+            next_start = end if end < len(sub_category_items) else None
+            return sub_category_items[start:end], next_start
+        return [], None    
+    
+    def extract_categories_and_subcategories(self):
+        """
+        Extracts categories and their subcategories from the items structure.
+
+        Returns:
+        - A dictionary where keys are category names and values are lists of subcategory names.
+        """
+        categories = {}
+        for category, subcategories in self.items.items():
+            # Initialize each category with an empty list for subcategories
+            if isinstance(subcategories, dict):
+                categories[category] = list(subcategories.keys())
+            else:categories[category] = []
+        # for subcategory in subcategories.keys():
+        #     # Append each subcategory to the appropriate category
+        #     categories[category].append(subcategory)
+        return categories
+    
+    def add_category(self, category_name):
+        if category_name in self.items:
+            print(f"Category '{category_name}' already exists.")
+            return False
+        else:
+            self.items[category_name] = {}
+            self.save_items()
+            print(f"Category '{category_name}' added successfully.")
+            return True
+        
+    def add_subcategory(self, category_name, subcategory_name):
+        if category_name not in self.items:
+            print(f"Category '{category_name}' does not exist. Please add the category first.")
+            return False
+        elif subcategory_name in self.items[category_name]:
+            print(f"Subcategory '{subcategory_name}' already exists in category '{category_name}'.")
+            return False
+        else:
+            self.items[category_name][subcategory_name] = {}
+            self.save_items()
+            print(f"Subcategory '{subcategory_name}' added successfully to category '{category_name}'.")
+            return True
+
     def items_are_equivalent(self, existing_item, new_item):
         # Compare suppliers
         if existing_item['supplier'] != new_item['supplier']:
@@ -139,11 +175,28 @@ class Inventory:
             return True
         return False
 
-    def view_item(self, category, item_key):
+    def view_item(self, category, subcategory, item_key):
         category_items = self.items.get(category)
         if category_items:
-            return category_items.get(item_key)
-        return None
+            subcategory_items = category_items.get(subcategory)
+            if subcategory_items:
+                item = subcategory_items.get(item_key)
+                if item:
+                # Formatting the details into a nicer format
+                    item_details_formatted = (
+                        f"Part: {item['part']}\n"
+                        f"Quantity: {item['quantity']}\n"
+                        f"Location: {item['location']}\n"
+                        f"Supplier: {item['supplier']}\n"
+                        f"Specifications:\n"
+                        f"  Capacity: {item['specs']['capacity']}\n"
+                        f"  Voltage: {item['specs']['voltage']}\n"
+                        f"  Tolerance: {item['specs']['tolerance']}\n"
+                        f"  Temperature Coefficient: {item['specs']['temperature_coefficient']}\n"
+                        f"Comments: {item.get('comments', 'N/A')}"  # Using get to handle missing comments gracefully
+                    )
+                    return item_details_formatted
+        return "Item not found."
 
     def search_items(self, search_criteria):
         found_items = []
@@ -205,18 +258,17 @@ class Inventory:
                             match = False
                             break
                     if match:
-                        found_items.append((category_name, part_type, part, item_details))
+                        print("Printing Items....")
+                        print(category_name][part_type][part)
+                        print(self.items[category_name][part_type][part])
+                        found_items.append(self.items[category_name][part_type][part])
+                        # found_items.append((category_name, part_type, part, item_details))
 
         return found_items
 
-
-
-
-
     def to_json(self):
         # Convert the inventory items to a serializable format
-        return json.dumps({k: v.to_dict()
-                          for k, v in self.items.items()}, indent=4)
+        return json.dumps({k: v.to_dict() for k, v in self.items.items()}, indent=4)
 
     @classmethod
     def from_json(cls, json_str):
@@ -227,16 +279,6 @@ class Inventory:
         return inventory
 
     def update_current_item(self, item):
-        """
-        Updates the details of an existing item in the inventory.
-
-        Parameters:
-        - item: An InventoryItem instance with the updated details.
-
-        Returns:
-        - True if the item was successfully updated.
-        - False if the item does not exist in the inventory.
-        """
         item_dict = item.to_dict()
         # Check if the item exists
         if item.category in self.items and item.part_type in self.items[item.category] and item.part in self.items[item.category][item.part_type]:
@@ -252,6 +294,26 @@ class Inventory:
             return False
 
 class InventoryManager:
+    @staticmethod
+    def load_inventory(filename='inventory.json'):
+        try:
+            with open(filename, 'r') as file:
+                return json.load(file)
+        except FileNotFoundError:
+            print("Error: The inventory file does not exist.")
+            return {}
+        except json.JSONDecodeError:
+            print("Error: The inventory file could not be parsed.")
+            return {}
+        
+    @staticmethod
+    def extract_categories(inventory_data):
+        return list(inventory_data.keys())
+    
+    @staticmethod
+    def extract_subcat(inventory_data):
+        return list(inventory_data.keys())
+    
     @staticmethod
     def load_specs_from_file(filename="master_specs.json"):
         try:
