@@ -63,8 +63,8 @@
                 "specs": {
                     "capacity": "330uF",
                     "voltage": "16V",
-                    "tolerance": "±20%",
-                    "temperature_coefficient": "-40 to +85°C"
+                    "tolerance": "\u00b120%",
+                    "temperature_coefficient": "-40 to +85\u00b0C"
                 },
                 "comments": "Bulk purchase discount applied"
             },
@@ -76,8 +76,8 @@
                 "specs": {
                     "capacity": "22uF",
                     "voltage": "50V",
-                    "tolerance": "±10%",
-                    "temperature_coefficient": "-55 to +105°C"
+                    "tolerance": "\u00b110%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
                 },
                 "comments": "For high voltage projects"
             },
@@ -89,7 +89,7 @@
                 "specs": {
                     "capacity": "1F",
                     "voltage": "5V",
-                    "tolerance": "±5%",
+                    "tolerance": "\u00b15%",
                     "temperature_coefficient": ""
                 },
                 "comments": "Super capacitor for energy storage projects"
@@ -102,8 +102,8 @@
                 "specs": {
                     "capacity": "47uF",
                     "voltage": "63V",
-                    "tolerance": "±10%",
-                    "temperature_coefficient": "-55 to +105°C"
+                    "tolerance": "\u00b110%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
                 },
                 "comments": ""
             },
@@ -115,8 +115,8 @@
                 "specs": {
                     "capacity": "10uF",
                     "voltage": "100V",
-                    "tolerance": "±5%",
-                    "temperature_coefficient": "-55 to +105°C"
+                    "tolerance": "\u00b15%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
                 },
                 "comments": "High voltage rating"
             },
@@ -128,8 +128,8 @@
                 "specs": {
                     "capacity": "560uF",
                     "voltage": "6.3V",
-                    "tolerance": "±20%",
-                    "temperature_coefficient": "-40 to +85°C"
+                    "tolerance": "\u00b120%",
+                    "temperature_coefficient": "-40 to +85\u00b0C"
                 },
                 "comments": ""
             },
@@ -141,8 +141,8 @@
                 "specs": {
                     "capacity": "220uF",
                     "voltage": "35V",
-                    "tolerance": "±10%",
-                    "temperature_coefficient": "-55 to +105°C"
+                    "tolerance": "\u00b110%",
+                    "temperature_coefficient": "-55 to +105\u00b0C"
                 },
                 "comments": "Replenished stock"
             },
@@ -154,8 +154,8 @@
                 "specs": {
                     "capacity": "68uF",
                     "voltage": "450V",
-                    "tolerance": "±20%",
-                    "temperature_coefficient": "-25 to +85°C"
+                    "tolerance": "\u00b120%",
+                    "temperature_coefficient": "-25 to +85\u00b0C"
                 },
                 "comments": "Special order for high voltage applications"
             },
@@ -167,8 +167,8 @@
                 "specs": {
                     "capacity": "2.2uF",
                     "voltage": "250V",
-                    "tolerance": "±10%",
-                    "temperature_coefficient": "-40 to +105°C"
+                    "tolerance": "\u00b110%",
+                    "temperature_coefficient": "-40 to +105\u00b0C"
                 },
                 "comments": "For audio equipment"
             },
@@ -180,8 +180,8 @@
                 "specs": {
                     "capacity": "1000uF",
                     "voltage": "10V",
-                    "tolerance": "±20%",
-                    "temperature_coefficient": "-20 to +85°C"
+                    "tolerance": "\u00b120%",
+                    "temperature_coefficient": "-20 to +85\u00b0C"
                 },
                 "comments": "High capacity for power supplies"
             }
@@ -482,5 +482,6 @@
     },
     "power supplies": {},
     "new": {},
-    "newtome": {}
+    "newtome": {},
+    "consumables": {}
 }

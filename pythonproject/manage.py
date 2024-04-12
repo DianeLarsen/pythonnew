@@ -65,6 +65,9 @@ class Inventory:
     def item_key(self, part_type, part):
         return f"{part_type}:{part}"
 
+    
+
+
     def add_item(self, item, force_add=False):
 
         exists, existing_item_details = self.item_exists(item.category, item.part_type, item.part)
@@ -96,12 +99,10 @@ class Inventory:
             print(f"Item {item.part} added successfully in {item.category} > {item.part_type}.")
             return True
         
-    def list_items(self, category_name, sub_category_name, start=0, limit=10):
+    def list_items(self, category_name, sub_category_name):
         if category_name in self.items and sub_category_name in self.items[category_name]:
             sub_category_items = list(self.items[category_name][sub_category_name].items())
-            end = start + limit
-            next_start = end if end < len(sub_category_items) else None
-            return sub_category_items[start:end], next_start
+            return sub_category_items
         return [], None    
     
     def extract_categories_and_subcategories(self):
@@ -259,7 +260,7 @@ class Inventory:
                             break
                     if match:
                         print("Printing Items....")
-                        print(category_name][part_type][part)
+                        print(category_name[part_type][part])
                         print(self.items[category_name][part_type][part])
                         found_items.append(self.items[category_name][part_type][part])
                         # found_items.append((category_name, part_type, part, item_details))
@@ -329,6 +330,8 @@ class InventoryManager:
         with open(filename, 'w') as file:
             json.dump(InventoryManager.master_specs, file, indent=4)
             print("Master specs saved to file.")
+
+
 
     @staticmethod
     def prompt_for_specs(item_type):
