@@ -8,9 +8,10 @@ class InventoryItem:
             part,
             quantity,
             location,
-            supplier,
             specs,
-            comments):
+            supplier = "",
+            comments = "",
+            ):
         self.category = category
         self.part_type = part_type
         self.part = part
@@ -22,6 +23,8 @@ class InventoryItem:
 
     def to_dict(self):
         return {
+            "category": self.category,
+            "part_type": self.part_type,
             "part": self.part,
             "quantity": self.quantity,
             "location": self.location,
@@ -51,10 +54,12 @@ class Inventory:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             
-    def item_exists(self, category, part_type, part):
-        item_details = self.items[category][part_type][part]
-        return True, item_details
-    
+    def item_exists(self, category, part_type, part_num):
+        try:
+            item_details = self.items[category][part_type][part_num]
+            return True, item_details
+        except:
+            return False, {}
     def save_items(self):
         try:
             with open('inventory.json', 'w') as file:
@@ -65,39 +70,40 @@ class Inventory:
     def item_key(self, part_type, part):
         return f"{part_type}:{part}"
 
-    
 
 
-    def add_item(self, item, force_add=False):
 
-        exists, existing_item_details = self.item_exists(item.category, item.part_type, item.part)
-        item_dict = item.to_dict()
+    def add_item(self, item, itemdetails, force_add=False):
 
+        exists, existing_item_details = self.item_exists(item["category"], item["part_type"], item["part_num"])
+        
+        item_dict = itemdetails.to_dict()
         if exists:
+            
             # existing_item = self.items[item.category][item.part_type][item.part]
             if self.items_are_equivalent(existing_item_details, item_dict):
-                print(f"Item {item.part} already exists with the same supplier and specs.")
+                print(f"Item {item["part_num"]} already exists with the same supplier and specs.")
                 return False
             else:
                 if force_add:
                     # Override the existing item with the new one.
-                    self.items[item.category][item.part_type][item.part] = item_dict
+                    self.items[item["category"]][item["part_type"]][item["part_num"]] = item_dict
                     self.save_items()
-                    print(f"Item {item.part} overridden successfully in {item.category} > {item.part_type}.")
+                    print(f"Item {item["part_num"]} overridden successfully in {item["category"]} > {item["part_type"]}.")
                     return True
                 else:
                     # Indicate that the item exists but is not equivalent, and no override was performed.
                     return "exists_diff"
-        else:
-            # Add new item if it doesn't exist.
-            if item.category not in self.items:
-                self.items[item.category] = {}
-            if item.part_type not in self.items[item.category]:
-                self.items[item.category][item.part_type] = {}
-            self.items[item.category][item.part_type][item.part] = item_dict
-            self.save_items()
-            print(f"Item {item.part} added successfully in {item.category} > {item.part_type}.")
-            return True
+        
+        # Add new item if it doesn't exist.
+        if item["category"] not in self.items:
+            self.items[item["category"]] = {}
+        if item["part_type"] not in self.items[item["category"]]:
+            self.items[item["category"]][item["part_type"]] = {}
+        self.items[item["category"]][item["part_type"]][item["part_num"]] = item_dict
+        self.save_items()
+        print(f"Item {item["part_num"]} added successfully in {item["category"]} > {item["part_type"]}.")
+        return True
         
     def list_items(self, category_name, sub_category_name):
         if category_name in self.items and sub_category_name in self.items[category_name]:
@@ -330,7 +336,20 @@ class InventoryManager:
         with open(filename, 'w') as file:
             json.dump(InventoryManager.master_specs, file, indent=4)
             print("Master specs saved to file.")
-
+    @staticmethod
+    def load_parts_from_file(filename="master_part.json"):
+        try:
+            with open(filename, 'r') as file:
+                InventoryManager.master_part = json.load(file)
+                print("Master parts loaded from file.")
+        except FileNotFoundError:
+            print("Master parts file not found. Starting with empty specs.")
+            InventoryManager.master_part = {}        
+    @staticmethod
+    def save_parts_to_file(filename="master_part.json"):
+        with open(filename, 'w') as file:
+            json.dump(InventoryManager.master_part, file, indent=4)
+            print("Master parts saved to file.")
 
 
     @staticmethod
@@ -339,7 +358,7 @@ class InventoryManager:
 
         # Load the master specs to ensure we have the latest version
         InventoryManager.load_specs_from_file()
-
+        print(item_type)
         # Check if item_type is already defined in master specs
         if item_type in InventoryManager.master_specs:
             type_specs = InventoryManager.master_specs[item_type]

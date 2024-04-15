@@ -156,7 +156,7 @@ def call_categories(inventory):
 
 def add_item_workflow(inventory, inventoryManager, categories, action = 'add'):
     category_name = ""
-    sub_category_name = ""
+
     while True:
         # category_choice = input("Select a category, 'exit' to exit program, <enter> to return to main menu: ").strip().lower()
         category_choice = select_category(categories, action) 
@@ -190,8 +190,9 @@ def add_item_workflow(inventory, inventoryManager, categories, action = 'add'):
                     continue
 
         # Subcategory selection or creation within the selected category
-        subcategory_choice = select_subcategory(category_choice, categories, action)  # Assuming a method to get subcategories
-        subcategories = categories[category_choice]
+        subcategory_choice = select_subcategory(category_choice, categories, action = 'add')  # Assuming a method to get subcategories
+        sub_category_name = ""
+        print(subcategory_choice)
         # subcategory_choice = input("Select a subcategory: ").strip().lower()
         if subcategory_choice == '':
             print("Returning to Main Menu.")
@@ -199,33 +200,41 @@ def add_item_workflow(inventory, inventoryManager, categories, action = 'add'):
         if subcategory_choice =='exit':
             print("Exiting program.")
             exit()
-        if subcategory_choice.isdigit():
-            if int(subcategory_choice) == len(subcategories) + 1:
-                new_subcategory_name = input("Enter the name of the new subcategory: ").strip()
-                if new_subcategory_name == "":
-                    continue
-                elif new_subcategory_name:
-                    if inventory.add_subcategory(category_name, new_subcategory_name):
-                        sub_category_name = new_subcategory_name
-                else:
-                    print("Invalid subcategory name. Please try again.")
-                    continue
-            elif int(subcategory_choice) == len(subcategories) + 2:
+  
+            
+        if subcategory_choice == "Add new sub-category":
+            new_subcategory_name = input("Enter the name of the new subcategory: ").strip()
+            if new_subcategory_name == "":
                 continue
+            elif new_subcategory_name:
+                if inventory.add_subcategory(category_name, new_subcategory_name):
+                    sub_category_name = new_subcategory_name
             else:
-                try:
-                    sub_category_index = int(subcategory_choice) - 1
-                    sub_category_name = categories[sub_category_index]
-                except (ValueError, IndexError):
-                    print("Invalid selection. Please try again.")
-                    continue
+                print("Invalid subcategory name. Please try again.")
+                continue
+        elif subcategory_choice == "Edit a sub-category":
+            continue
+
+
         
         # Proceed with adding an item to the chosen category and subcategory
         item_to_add = {}
-        item_to_add["category"] = category_name
-        item_to_add["part_type"] = sub_category_name
-        item_to_add["part"] = inventoryManager.prompt_for_specs(category_name, sub_category_name)
-        inventory.add_item(item_to_add)
+        example = ""
+        InventoryManager.load_parts_from_file()
+        if subcategory_choice in InventoryManager.master_part:
+            example = InventoryManager.master_part[subcategory_choice]
+        item_to_add["part_num"] = input(f"Enter part number{example}: ").strip()
+        item_to_add["quantity"] = input(f"Enter amount: ").strip()
+        item_to_add["location"] = input(f"Enter location(EELab1 Cab2Bin14): ").strip()
+        item_to_add["supplier"] = input(f"Enter supplier: ").strip()
+        item_to_add["comments"] = input(f"Enter comments: ").strip()
+        item_to_add["category"] = category_choice
+
+        item_to_add["part_type"] = subcategory_choice
+        item_to_add[item_to_add["part_num"]] = inventoryManager.prompt_for_specs(subcategory_choice)
+        print(item_to_add)
+        newitem = InventoryItem(category_choice, subcategory_choice, item_to_add["part_num"], item_to_add["quantity"], item_to_add["location"], item_to_add[item_to_add["part_num"]], item_to_add["supplier"], item_to_add["comments"] )
+        inventory.add_item(item_to_add, newitem)
         
         break  # Exit after adding an item
 

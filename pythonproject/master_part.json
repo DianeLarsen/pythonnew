@@ -1,0 +1,41 @@
+{
+    "capacitors": [
+        "capacity_voltage"
+    ],
+    "resistors": [
+        "resistance_power_rating"
+    ],
+    "diodes": [
+        "forward_current_reverse_voltage"
+    ],
+    "inductors": [
+        "inductance_current_rating"
+    ],
+    "chips": [
+        "type",
+        "functionality",
+        "number_of_pins",
+        "frequency"
+    ],
+    "FETs": [
+        "voltage_current"
+    ],
+    "screws": [
+        "length_head_type"
+    ],
+    "nails": [
+        "length_type"
+    ],
+    "brackets": [
+        "size_thickness"
+    ],
+    "screens": [
+        "size_resolution_type"
+    ],
+    "batteries": [
+        "type_voltage_capacity"
+    ],
+    "covers": [
+        "dimensions_material"
+    ]
+}
