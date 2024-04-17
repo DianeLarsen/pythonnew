@@ -7,7 +7,8 @@
         "capacity",
         "voltage",
         "tolerance",
-        "temperature_coefficient",
+        "temperature_coefficient - lower",
+        "temperature_coefficient - upper",
         "test"
     ],
     "resistors": [

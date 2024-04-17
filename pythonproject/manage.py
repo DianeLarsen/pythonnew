@@ -60,6 +60,7 @@ class Inventory:
             return True, item_details
         except:
             return False, {}
+        
     def save_items(self):
         try:
             with open('inventory.json', 'w') as file:
@@ -70,45 +71,50 @@ class Inventory:
     def item_key(self, part_type, part):
         return f"{part_type}:{part}"
 
-
-
-
-    def add_item(self, item, itemdetails, force_add=False):
+    def add_item(self, item, itemdetails):
 
         exists, existing_item_details = self.item_exists(item["category"], item["part_type"], item["part_num"])
         
         item_dict = itemdetails.to_dict()
         if exists:
-            
+            print("exists")
             # existing_item = self.items[item.category][item.part_type][item.part]
             if self.items_are_equivalent(existing_item_details, item_dict):
                 print(f"Item {item["part_num"]} already exists with the same supplier and specs.")
-                return False
-            else:
-                if force_add:
+                force_add_input = input("Would you like to add anyways (yes/no): ").strip()
+                if force_add_input == "yes" or force_add_input == "y":
+                    change_input = input("In order to add this part, the part number must be changed.\n Would you like to enter a new part number?  (yes/no): ").strip()
+                    if change_input == 'yes' or change_input == 'y':
+                        item["part_num"] = input(f"Enter part number (example: {item["part_num"]}a): ").strip()
+                    else:
+                        update_input = input("Would you like to update the exisitng part?  (yes/no): ").strip()
+                        if update_input == 'yes' or update_input == 'y':
+                            self.update_item(item)
+                            
+                            
                     # Override the existing item with the new one.
                     self.items[item["category"]][item["part_type"]][item["part_num"]] = item_dict
                     self.save_items()
                     print(f"Item {item["part_num"]} overridden successfully in {item["category"]} > {item["part_type"]}.")
+                    
                     return True
-                else:
-                    # Indicate that the item exists but is not equivalent, and no override was performed.
-                    return "exists_diff"
-        
+                return False
+        else:
         # Add new item if it doesn't exist.
-        if item["category"] not in self.items:
-            self.items[item["category"]] = {}
-        if item["part_type"] not in self.items[item["category"]]:
-            self.items[item["category"]][item["part_type"]] = {}
-        self.items[item["category"]][item["part_type"]][item["part_num"]] = item_dict
-        self.save_items()
-        print(f"Item {item["part_num"]} added successfully in {item["category"]} > {item["part_type"]}.")
+            if item["category"] not in self.items:
+                self.items[item["category"]] = {}
+            if item["part_type"] not in self.items[item["category"]]:
+                self.items[item["category"]][item["part_type"]] = {}
+            self.items[item["category"]][item["part_type"]][item["part_num"]] = item_dict
+            self.save_items()
+            print(f"Item {item["part_num"]} added successfully in {item["category"]} > {item["part_type"]}.")
         return True
         
     def list_items(self, category_name, sub_category_name):
+        print(category_name, sub_category_name)
         if category_name in self.items and sub_category_name in self.items[category_name]:
             sub_category_items = list(self.items[category_name][sub_category_name].items())
-            return sub_category_items
+            return [item for _, item in sub_category_items]
         return [], None    
     
     def extract_categories_and_subcategories(self):
@@ -155,11 +161,13 @@ class Inventory:
     def items_are_equivalent(self, existing_item, new_item):
         # Compare suppliers
         if existing_item['supplier'] != new_item['supplier']:
+            print("suppliers are not the same")
             return False
 
         # Compare specs, ensuring all specs in existing_item are in new_item and are equivalent
         for spec_key, spec_value in existing_item['specs'].items():
             if spec_key not in new_item['specs'] or new_item['specs'][spec_key] != spec_value:
+                print ( spec_key,": ", spec_value )
                 return False
 
         # If we reach here, all compared specs are the same
@@ -175,11 +183,21 @@ class Inventory:
             print(f"Item {part} not found in {category} > {part_type}.")
             return False
 
-    def update_item(self, category, item_key, **updates):
-        category_items = self.items.get(category)
-        if category_items and item_key in category_items:
-            category_items[item_key].update(updates)
+    def update_item(self, category, part_type, item):
+        print("item", item)
+        if item["part"] in self.items[category][part_type]:
+            for items in self.items[category][part_type][item["part"]].keys():
+                self.items[category][part_type][item["part"]][items] = item[items]
+            self.save_items()
             return True
+        else:
+            for part in self.items[category][part_type]:
+                if item["part"] in part:
+                    for items in self.items[category][part_type][part].keys():
+                        self.items[category][part_type][part][items] = item[items]
+                    self.save_items()
+                    return True
+            print(item["part"], "does not match part in inventory")
         return False
 
     def view_item(self, category, subcategory, item_key):
@@ -207,70 +225,17 @@ class Inventory:
 
     def search_items(self, search_criteria):
         found_items = []
-
-        # Helper function to recursively search within item details (including nested dicts)
-        def detail_matches_criteria(detail, value):
-            if isinstance(detail, dict):
-                return any(detail_matches_criteria(sub_detail, value) for sub_detail in detail.values())
-            return str(detail).lower() == str(value).lower()
-
-        for category_name, subcategories in self.items.items():
-            # Category filter
-            if 'category_name' in search_criteria and search_criteria['category_name'] != category_name:
-                continue
-
-            for part_type, parts in subcategories.items():
-                # Sub-category filter
-                if 'sub_category_name' in search_criteria and search_criteria['sub_category_name'] != part_type:
-                    continue
-
-                for part, item_details in parts.items():
-                    # Part name filter
-                    if 'part' in search_criteria and search_criteria['part'].lower() not in part.lower():
-                        continue
-
-                    # General search term filter
-                    if 'general_search_term' in search_criteria:
-                        general_search_term = search_criteria['general_search_term'].lower()
-                        if not any(general_search_term in str(detail).lower() for detail in item_details.values()):
-                            continue
-
-                    # Specific criteria filter
-                    match = True
-                    for key, value in search_criteria.items():
-                        if not value or key in ['category_name', 'sub_category_name', 'part', 'general_search_term']:
-                            continue  # Skip non-specific criteria
-
-                        # Adjusted to use helper function for potential nested detail matching
-                        if key in item_details and isinstance(item_details[key], dict):
-                            print("2")
-                            nested_dict = item_details[key]
-                            nested_match = False
-                            for nested_key, nested_value in nested_dict.items():
-                                if detail_matches_criteria(nested_value, value):
-                                    nested_match = True
-                                    break
-                            if not nested_match:
-                                match = False
-                                break
-                        elif key in item_details:
-                            # Direct attribute match
-                            if not detail_matches_criteria(item_details[key], value):
-                                match = False
-                                break
-                        elif key in item_details["specs"]:
-                            match = True
-                        else:
-                            # Key not found in either top-level or nested dictionary
-                            match = False
-                            break
-                    if match:
-                        print("Printing Items....")
-                        print(category_name[part_type][part])
-                        print(self.items[category_name][part_type][part])
-                        found_items.append(self.items[category_name][part_type][part])
-                        # found_items.append((category_name, part_type, part, item_details))
-
+        
+        if self.items[search_criteria["category"]][search_criteria["subcategory"]]:
+            for item in self.items[search_criteria["category"]][search_criteria["subcategory"]]:
+                # print(self.items[search_criteria["category"]][search_criteria["subcategory"]][item]['specs'].values())
+                for part in search_criteria.values():
+                    if part is not "":
+                        if part in self.items[search_criteria["category"]][search_criteria["subcategory"]][item]['specs'].values():
+                            if self.items[search_criteria["category"]][search_criteria["subcategory"]][item] not in found_items:
+                                found_items.append(self.items[search_criteria["category"]][search_criteria["subcategory"]][item]) 
+        # for item in found_items:
+        #     print(item)
         return found_items
 
     def to_json(self):

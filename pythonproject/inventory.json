@@ -1,19 +1,6 @@
 {
     "components": {
         "capacitors": {
-            "100uF_25V": {
-                "part": "100uF_25V",
-                "quantity": 100,
-                "location": "Shelf A1",
-                "supplier": "ElectroParts Inc.",
-                "specs": {
-                    "capacity": "100uF",
-                    "voltage": "25V",
-                    "tolerance": "\u00b15%",
-                    "temperature_coefficient": "-55 to +105\u00b0C"
-                },
-                "comments": ""
-            },
             "470uF_10V": {
                 "part": "470uF_10V",
                 "quantity": 50,
@@ -184,6 +171,39 @@
                     "temperature_coefficient": "-20 to +85\u00b0C"
                 },
                 "comments": "High capacity for power supplies"
+            },
+            "100uF_25Va": {
+                "category": "components",
+                "part_type": "capacitors",
+                "part": "100uF_25V",
+                "quantity": "10",
+                "location": "EELAB1 B2",
+                "supplier": "ElectroParts Inc.",
+                "specs": {
+                    "capacity": "100uF",
+                    "voltage": "25V",
+                    "tolerance": "5%",
+                    "temperature_coefficient": "-55 to +105C",
+                    "test": ""
+                },
+                "comments": ""
+            },
+            "175mF_20V": {
+                "category": "components",
+                "part_type": "capacitors",
+                "part": "175mF_20V",
+                "quantity": "15",
+                "location": "EELab1 Cab2Bin12",
+                "supplier": "ETech Inc.",
+                "specs": {
+                    "capacity": "175mF",
+                    "voltage": "20V",
+                    "tolerance": "5%",
+                    "temperature_coefficient - lower": "-15C",
+                    "temperature_coefficient - upper": "30C",
+                    "test": ""
+                },
+                "comments": ""
             }
         },
         "resistors": {
@@ -483,5 +503,21 @@
     "power supplies": {},
     "new": {},
     "newtome": {},
-    "consumables": {}
+    "consumables": {},
+    "capacitors": {
+        "components": {
+            "": {
+                "category": "capacitors",
+                "part_type": "components",
+                "part": "",
+                "quantity": "",
+                "location": "",
+                "supplier": "",
+                "specs": {
+                    "": "example value"
+                },
+                "comments": ""
+            }
+        }
+    }
 }
