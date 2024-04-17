@@ -1,11 +1,19 @@
 {
   "name": "webcrawler",
   "version": "1.0.0",
-  "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js",
+    "test": "jest"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "dlarsen",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/DianeLarsen/pythonnew/tree/6cee5c992f74076f90aea5b45649027c97dd6ae7/webcrawler)"
+  },
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
